@@ -7,7 +7,7 @@
 ## ✨ 核心功能
 
 ### 🎯 概念学习资料生成
-内置 AI 驱动的学习助手，能够为任意统计学/数据分析概念自动生成：
+内置 AI 驱动的学习助手，能够为任意**《统计与大数据分析》**课程概念自动生成：
 - 📚 完整的概念解析（定义、公式、直观解释）
 - 💡 实际应用场景和案例分析
 - ⚠️ 常见误区提醒
@@ -61,7 +61,7 @@
 
    - **制定学习计划**
      ```
-     帮我规划统计学的复习计划
+     帮我规划《统计与大数据分析》的复习计划
      ```
 
    - **对比概念**
@@ -84,26 +84,18 @@
 ## 📁 项目结构
 
 ```
-statistics-bigdata-learning/
+statistics-data-analysis/
 ├── .workbuddy/
 │   └── skills/
 │       └── concept-learning-generator/
 │           └── SKILL.md          # 核心学习资料生成 Skill
-├── learning-materials/           # 生成的学习资料（按主题分类）
-│   ├── descriptive-statistics/
-│   ├── probability-distributions/
-│   ├── hypothesis-testing/
-│   ├── regression-analysis/
-│   └── ...
-├── exercises/                    # 练习题库
-│   ├── basic/
-│   ├── intermediate/
-│   └── advanced/
-├── code-examples/                # 代码示例
-│   ├── python/
-│   └── r/
+├── learning-materials/           # 学习资料文档
+│   ├── agent.html               # AI 智能体架构说明
+│   ├── llm-context.html         # LLM 上下文管理系统
+│   ├── skill.html               # Skill 完整说明文档
+│   └── concept-relationship.html# 概念关系图谱
 ├── README.md                     # 项目说明文档
-└── LICENSE                       # 开源许可证
+└── .gitignore                    # Git 忽略规则
 ```
 
 ## 🎯 使用示例
@@ -120,7 +112,7 @@ statistics-bigdata-learning/
 
 ### 示例 2：期末复习计划
 **输入：**
-> 我要准备统计学期末考试，帮我制定复习计划
+> 我要准备《统计与大数据分析》期末考试，帮我制定复习计划
 
 **输出：**
 - 4周学习路线图
@@ -179,7 +171,7 @@ statistics-bigdata-learning/
 ## 🙏 致谢
 
 - WorkBuddy 团队提供的 AI 能力支持
-- 统计学与数据科学社区的优质资源
+- 《统计与大数据分析》学习社区的优质资源
 - 所有贡献者的努力
 
 ---

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM 上下文 (Context) - 统计与大数据分析学习系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            color: #f5576c;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-left: 5px solid #f5576c;
+            padding-left: 15px;
+        }
+        
+        .context-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #f5576c;
+        }
+        
+        .context-card h3 {
+            color: #d63447;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        
+        .code-comment {
+            color: #6a9955;
+        }
+        
+        .code-keyword {
+            color: #569cd6;
+        }
+        
+        .code-string {
+            color: #ce9178;
+        }
+        
+        .code-function {
+            color: #dcdcaa;
+        }
+        
+        .highlight-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .info-box {
+            background: #d1ecf1;
+            border: 1px solid #17a2b8;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin: 3px;
+        }
+        
+        .tag-system { background: #667eea; color: white; }
+        .tag-user { background: #28a745; color: white; }
+        .tag-skill { background: #f5576c; color: white; }
+        .tag-knowledge { background: #fd7e14; color: white; }
+        
+        footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .diagram {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .flow-arrow {
+            font-size: 2em;
+            color: #f5576c;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 LLM 上下文管理</h1>
+            <p>理解 AI 智能体如何处理和利用上下文信息</p>
+        </div>
+
+        <div class="content">
+            <!-- 什么是 Context -->
+            <div class="section">
+                <h2>📖 什么是 LLM 上下文？</h2>
+                <div class="context-card">
+                    <h3>定义与重要性</h3>
+                    <p><strong>Context（上下文）</strong>是指 LLM 在生成回复时所参考的所有信息，包括：</p>
+                    <ul style="margin-top: 10px; padding-left: 25px;">
+                        <li><strong>系统提示词（System Prompt）</strong>：定义 AI 的角色、能力和行为准则</li>
+                        <li><strong>用户输入（User Input）</strong>：当前对话中的用户消息</li>
+                        <li><strong>历史对话（Conversation History）</strong>：之前的交互记录</li>
+                        <li><strong>Skill 定义（SKILL.md）</strong>：工作流程和输出模板</li>
+                        <li><strong>知识库内容（Knowledge Base）</strong>：领域专业知识</li>
+                        <li><strong>工作记忆（Working Memory）</strong>：当前任务的状态和中间结果</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 为什么上下文很重要？</strong><br>
+                    上下文质量直接决定了 AI 输出的准确性和相关性。在统计学习中，
+                    完整的上下文可以帮助 AI：
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li>理解用户的真实学习需求（而不只是字面意思）</li>
+                        <li>选择合适的解释深度和表达方式</li>
+                        <li>关联相关概念，构建知识网络</li>
+                        <li>避免重复已解释过的内容</li>
+                        <li>记住用户的偏好和学习进度</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 上下文的组成 -->
+            <div class="section">
+                <h2>🧩 上下文的组成结构</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 18%;">层级</th>
+                            <th style="width: 22%;">类型</th>
+                            <th style="width: 35%;">内容示例</th>
+                            <th style="width: 25%;">作用</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="tag tag-system">L0 系统</span></td>
+                            <td><strong>System Prompt</strong></td>
+                            <td>"你是一个统计学教学助手..."</td>
+                            <td>定义角色和行为边界</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-skill">L1 Skill</span></td>
+                            <td><strong>SKILL.md 内容</strong></td>
+                            <td>概念学习模板、输出格式规范</td>
+                            <td>指导工作流程和输出结构</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-knowledge">L2 知识</span></td>
+                            <td><strong>领域知识库</strong></td>
+                            <td>统计公式、定理、代码库</td>
+                            <td>提供专业、准确的内容</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-user">L3 对话</span></td>
+                            <td><strong>历史消息</strong></td>
+                            <td>"之前学习了正态分布..."</td>
+                            <td>保持对话连贯性</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-user">L4 输入</span></td>
+                            <td><strong>当前用户输入</strong></td>
+                            <td>"帮我学习假设检验"</td>
+                            <td>触发具体的任务执行</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="diagram">
+                    <h3>上下文层次结构图</h3>
+                    <div style="font-family: monospace; margin-top: 20px;">
+                        <div style="background: #667eea; color: white; padding: 15px; border-radius: 5px; max-width: 600px; margin: 0 auto;">
+                            L0: System Prompt (角色定义)
+                        </div>
+                        <div class="flow-arrow">↓</div>
+                        <div style="background: #f5576c; color: white; padding: 15px; border-radius: 5px; max-width: 550px; margin: 0 auto;">
+                            L1: Skill Definition (SKILL.md)
+                        </div>
+                        <div class="flow-arrow">↓</div>
+                        <div style="background: #fd7e14; color: white; padding: 15px; border-radius: 5px; max-width: 500px; margin: 0 auto;">
+                            L2: Knowledge Base (统计知识)
+                        </div>
+                        <div class="flow-arrow">↓</div>
+                        <div style="background: #28a745; color: white; padding: 15px; border-radius: 5px; max-width: 450px; margin: 0 auto;">
+                            L3: Conversation History
+                        </div>
+                        <div class="flow-arrow">↓</div>
+                        <div style="background: #17a2b8; color: white; padding: 15px; border-radius: 5px; max-width: 400px; margin: 0 auto;">
+                            L4: Current User Input
+                        </div>
+                        <div class="flow-arrow">↓</div>
+                        <div style="background: #6c757d; color: white; padding: 15px; border-radius: 5px; max-width: 350px; margin: 0 auto;">
+                            🎯 AI Response Generation
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 上下文窗口管理 -->
+            <div class="section">
+                <h2>🪟 上下文窗口管理</h2>
+                
+                <div class="context-card">
+                    <h3>Token 限制与优化策略</h3>
+                    <p>LLM 的上下文窗口有固定的 Token 限制（例如 4K/8K/32K/128K）。对于复杂的统计学习任务，需要智能地管理上下文空间：</p>
+                </div>
+
+                <div class="code-block">
+<span class="code-comment"># 上下文窗口分配策略（以 8K 窗口为例）</span>
+
+<span class="code-keyword">class</span> <span class="code-function">ContextManager</span>:
+    
+    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(self, max_tokens=<span class="code-string">8192</span>):
+        self.max_tokens = max_tokens
+        self.allocation = {
+            <span class="code-string">"system_prompt"</span>: <span class="code-string">500</span>,      <span class="code-comment"># 固定：系统提示</span>
+            <span class="code-string">"skill_definition"</span>: <span class="code-string">1500</span>,   <span class="code-comment"># 固定：Skill模板</span>
+            <span class="code-string">"knowledge_base"</span>: <span class="code-string">2000</span>,     <span class="code-comment"># 动态：相关知识片段</span>
+            <span class="code-string">"conversation_history"</span>: <span class="code-string">3000</span>, <span class="code-comment"># 滚动：最近N轮对话</span>
+            <span class="code-string">"user_input"</span>: <span class="code-string">500</span>,          <span class="code-comment"># 当前输入</span>
+            <span class="code-string">"output_buffer"</span>: <span class="code-string">692</span>         <span class="code-comment"># 预留给输出</span>
+        }
+    
+    <span class="code-keyword">def</span> <span class="code-function">optimize_context</span>(self, user_query):
+        <span class="code-comment"># 1. 意图识别</span>
+        intent = self.<span class="code-function">recognize_intent</span>(user_query)
+        
+        <span class="code-comment"># 2. 检索相关知识（按相关性排序）</span>
+        knowledge = self.<span class="code-function">retrieve_knowledge</span>(
+            query=user_query,
+            max_tokens=self.allocation[<span class="code-string">"knowledge_base"</span>]
+        )
+        
+        <span class="code-comment"># 3. 压缩历史对话（保留摘要+最近3轮）</span>
+        history = self.<span class="code-function">compress_history</span>(
+            keep_last_n=<span class="code-string">3</span>,
+            summarize_older=<span class="code-keyword">True</span>
+        )
+        
+        <span class="code-comment"># 4. 组装最终上下文</span>
+        context = {
+            <span class="code-string">"system"</span>: self.system_prompt,
+            <span class="code-string">"skill"</span>: self.skill_template,
+            <span class="code-string">"knowledge"</span>: knowledge,
+            <span class="code-string">"history"</span>: history,
+            <span class="code-string">"input"</span>: user_query
+        }
+        
+        <span class="code-keyword">return</span> context
+                </div>
+
+                <div class="highlight-box">
+                    <strong>⚠️ 关键挑战：</strong>
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li><strong>长尾问题：</strong>复杂统计概念的完整解释可能超过窗口限制</li>
+                        <li><strong>信息优先级：</strong>如何决定哪些知识更重要？</li>
+                        <li><strong>动态调整：</strong>根据查询类型重新分配 Token 配额</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 实际应用示例 -->
+            <div class="section">
+                <h2>💡 实际应用示例</h2>
+                
+                <div class="context-card">
+                    <h3>示例：用户询问 "中心极限定理"</h3>
+                    
+                    <div class="code-block">
+<span class="code-comment">=== 构建的完整上下文 ===</span>
+
+<span class="code-string">[SYSTEM]</span>
+你是一个专业的统计学教学AI助手。你的任务是帮助学生理解...
+（系统提示词 - 500 tokens）
+
+<span class="code-string">[SKILL CONTEXT]</span>
+## Skill: concept-learning-generator
+### 触发条件
+当用户提出以下需求时触发此 Skill：
+- "帮我学习XXX概念"
+- "解释一下统计学中的XXX"
+...
+（SKILL.md 核心内容 - 1200 tokens）
+
+<span class="code-string">[KNOWLEDGE RETRIEVED]</span>
+**主题**: Central Limit Theorem (CLT)
+**数学定义**: 设 X₁, X₂, ..., Xₙ 是独立同分布的随机变量...
+**直观解释**: 当样本量足够大时，样本均值的分布近似正态分布...
+**关键公式**: 
+$$\bar{X} \sim N(\mu, \sigma^2/n)$$
+**Python 示例**: 使用 numpy 模拟 CLT 的代码...
+**常见误区**: CLT 不要求原始数据服从正态分布...
+**前置知识**: 随机变量、期望值、方差、正态分布
+**应用场景**: 置信区间估计、假设检验...
+（相关知识片段 - 1800 tokens）
+
+<span class="code-string">[CONVERSATION HISTORY]</span>
+User: 我正在学习统计学基础
+Agent: 很好！统计学是数据分析的基础。你想从哪个主题开始？
+User: 刚学完描述性统计，想了解概率分布
+Agent: 正态分布是最重要的概率分布之一。需要我详细讲解吗？
+（最近3轮对话 - 800 tokens）
+
+<span class="code-string">[CURRENT INPUT]</span>
+User: 帮我学习中心极限定理
+（当前输入 - 50 tokens）
+
+<span class="code-comment">=== 总计: ~4350 tokens (剩余空间用于输出) ===</span>
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ 上下文优化的效果：</strong>
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li>AI 知道用户已经学了描述性统计 → 跳过基础铺垫</li>
+                        <li>知道用户想了解概率分布 → 重点强调 CLT 与正态分布的关系</li>
+                        <li>检索到完整的 CLT 知识 → 可以生成高质量的解释</li>
+                        <li>有 SKILL 模板 → 输出结构化、格式统一</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 上下文持久化 -->
+            <div class="section">
+                <h2>💾 上下文持久化与记忆</h2>
+                
+                <div class="context-card">
+                    <h3>跨会话的上下文管理</h3>
+                    <p>为了提供连续的学习体验，系统实现了多层记忆机制：</p>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>记忆层</th>
+                            <th>存储位置</th>
+                            <th>生命周期</th>
+                            <th>存储内容</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>工作记忆</strong></td>
+                            <td>当前会话</td>
+                            <td>临时（会话结束即清除）</td>
+                            <td>当前任务的中间状态、计算过程</td>
+                        </tr>
+                        <tr>
+                            <td><strong>短期记忆</strong></td>
+                            <td>Workspace Memory (.workbuddy/memory/)</td>
+                            <td>当天</td>
+                            <td>今日学习进度、生成的资料路径</td>
+                        </tr>
+                        <tr>
+                            <td><strong>长期记忆</strong></td>
+                            <td>MEMORY.md 文件</td>
+                            <td>永久</td>
+                            <td>用户偏好、学习风格、薄弱环节</td>
+                        </tr>
+                        <tr>
+                            <td><strong>项目记忆</strong></td>
+                            <td>Git 仓库历史</td>
+                            <td>版本化管理</td>
+                            <td>所有生成的学习资料、练习题</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="code-block">
+<span class="code-comment"># 记忆更新机制示例</span>
+
+<span class="code-keyword">def</span> <span class="code-function">update_memory</span>(interaction_result):
+    <span class="code-comment"># 提取关键信息</span>
+    learned_concept = interaction_result[<span class="code-string">"concept"</span>]
+    user_questions = interaction_result[<span class="code-string">"questions_asked"</span>]
+    difficulty_level = interaction_result[<span class="code-string">"perceived_difficulty"</span>]
+    
+    <span class="code-comment"># 更新今日工作日志</span>
+    append_to_daily_log(
+        date=today(),
+        activity=f<span class="code-string">"学习了 {learned_concept}"</span>,
+        output_files=interaction_result[<span class="code-string">"generated_files"</span>]
+    )
+    
+    <span class="code-comment"># 更新长期记忆（如果发现新模式）</span>
+    <span class="code-keyword">if</span> difficulty_level == <span class="code-string">"high"</span>:
+        append_to_long_term_memory(
+            category=<span class="code-string">"weak_areas"</span>,
+            content=learned_concept,
+            note=<span class="code-string">"需要更多练习和直观解释"</span>
+        )
+    
+    <span class="code-comment"># 提交到 Git（持久化所有产出）</span>
+    git_commit(
+        message=f<span class="code-string">"Add learning materials for {learned_concept}"</span>,
+        files=interaction_result[<span class="code-string">"generated_files"</span>]
+    )
+                </div>
+            </div>
+
+            <!-- 最佳实践 -->
+            <div class="section">
+                <h2>✨ 上下文管理的最佳实践</h2>
+                
+                <div class="context-card">
+                    <h3>针对统计学习的优化建议</h3>
+                    
+                    <ol style="padding-left: 25px; line-height: 2;">
+                        <li>
+                            <strong>分层加载知识</strong><br>
+                            <small>先加载核心定义，再根据用户追问深入细节（避免一次性加载过多）</small>
+                        </li>
+                        <li>
+                            <strong>使用结构化模板</strong><br>
+                            <small>SKILL.md 定义的模板确保输出一致性，减少上下文中的格式说明</small>
+                        </li>
+                        <li>
+                            <strong>主动总结长对话</strong><br>
+                            <small>每5-10轮自动生成摘要，释放上下文空间</small>
+                        </li>
+                        <li>
+                            <strong>标记数学符号</strong><br>
+                            <small>首次引入符号时明确定义，后续可直接使用（节省重复解释）</small>
+                        </li>
+                        <li>
+                            <strong>保存中间状态</strong><br>
+                            <small>复杂推导过程可分步进行，每步结果存入工作记忆</small>
+                        </li>
+                        <li>
+                            <strong>利用文件系统</strong><br>
+                            <small>大型代码示例或数据集通过文件引用，而非内嵌到上下文中</small>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>🔧 技术实现提示：</strong>
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li>使用向量数据库（如 FAISS）进行语义检索相关知识</li>
+                        <li>实现 Token 计数器，实时监控上下文使用量</li>
+                        <li>设计上下文优先级队列，确保关键信息不被截断</li>
+                        <li>考虑使用上下文压缩模型（如 LongChat）处理超长历史</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🧠 LLM 上下文管理文档 | 统计与大数据分析学习系统 | Powered by WorkBuddy</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                📅 最后更新：2026-09-03 | 
+                🔗 <a href="https://github.com/katixia1145/statistics-data-analysis" style="color: #f5576c;">GitHub 仓库</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill 详细说明 - 统计与大数据分析学习系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 45px;
+        }
+        
+        .section h2 {
+            color: #11998e;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-left: 5px solid #38ef7d;
+            padding-left: 15px;
+        }
+        
+        .skill-card {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-left: 5px solid #11998e;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.2);
+        }
+        
+        .skill-card h3 {
+            color: #00695c;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .skill-icon {
+            font-size: 1.5em;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        
+        .feature-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            border-color: #38ef7d;
+            box-shadow: 0 5px 20px rgba(56, 239, 125, 0.2);
+        }
+        
+        .feature-item h4 {
+            color: #11998e;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .code-block {
+            background: #263238;
+            color: #aed581;
+            padding: 25px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            line-height: 1.7;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .code-comment { color: #78909c; }
+        .code-keyword { color: #80cbc4; }
+        .code-string { color: #ffcc80; }
+        .code-function { color: #fff59d; }
+        .code-variable { color: #f48fb1; }
+        
+        .workflow-diagram {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 35px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .workflow-step {
+            display: inline-block;
+            background: white;
+            border: 3px solid #11998e;
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            line-height: 84px;
+            margin: 10px;
+            font-weight: bold;
+            color: #11998e;
+            font-size: 1.1em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .arrow {
+            display: inline-block;
+            color: #38ef7d;
+            font-size: 2em;
+            vertical-align: middle;
+            margin: 0 -10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        tr:hover {
+            background: #f1f8f7;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+        
+        .tag-trigger { background: #e91e63; color: white; }
+        .tag-output { background: #9c27b0; color: white; }
+        .tag-topic { background: #3f51b5; color: white; }
+        .tag-format { background: #009688; color: white; }
+        
+        .info-box {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 18px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .warning-box {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 18px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .example-box {
+            background: #f3e5f5;
+            border: 2px solid #9c27b0;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .example-box h4 {
+            color: #7b1fa2;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        footer {
+            background: #f8f9fa;
+            padding: 25px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        a {
+            color: #11998e;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        a:hover {
+            color: #38ef7d;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Skill 完整说明文档</h1>
+            <p>concept-learning-generator 深度解析与使用指南</p>
+        </div>
+
+        <div class="content">
+            <!-- Skill 概述 -->
+            <div class="section">
+                <h2>📋 Skill 基本信息</h2>
+                
+                <table>
+                    <tr>
+                        <td style="width: 30%;"><strong>名称 (Name)</strong></td>
+                        <td><code style="background: #e8f5e9; padding: 4px 10px; border-radius: 4px;">concept-learning-generator</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>版本 (Version)</strong></td>
+                        <td>1.0.0</td>
+                    </tr>
+                    <tr>
+                        <td><strong>类型 (Type)</strong></td>
+                        <td>项目级 Skill (Project-level)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>位置 (Location)</strong></td>
+                        <td><code>.workbuddy/skills/concept-learning-generator/SKILL.md</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>适用领域 (Domain)</strong></td>
+                        <td>统计学、大数据分析、数据科学、机器学习</td>
+                    </tr>
+                    <tr>
+                        <td><strong>目标用户 (Target Users)</strong></td>
+                        <td>大学生、数据分析初学者、自学者、备考学生</td>
+                    </tr>
+                </table>
+
+                <div class="info-box">
+                    <strong>💡 一句话描述：</strong>
+                    <p style="margin-top: 8px;">
+                        这是一个 AI 驱动的<strong>概念学习资料生成器</strong>，能够根据用户需求自动生成结构化、
+                        多模态的统计学和数据分析学习材料，包括概念解释、数学公式、代码示例、练习题等。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 触发条件 -->
+            <div class="section">
+                <h2>🎯 触发条件 (Trigger Conditions)</h2>
+                
+                <div class="skill-card">
+                    <h3><span class="skill-icon">🔔</span> 自动触发场景</h3>
+                    <p>当用户的输入匹配以下模式时，Skill 会自动激活：</p>
+                    
+                    <div style="margin-top: 20px;">
+                        <span class="tag tag-trigger">"帮我学习XXX概念"</span>
+                        <span class="tag tag-trigger">"生成XXX的学习资料"</span>
+                        <span class="tag tag-trigger">"解释一下统计学中的XXX"</span>
+                        <span class="tag tag-trigger">"大数据分析中的XXX是什么"</span>
+                        <span class="tag tag-trigger">"我想了解XXX知识点"</span>
+                        <span class="tag tag-trigger">"整理XXX的学习笔记"</span>
+                        <span class="tag tag-trigger">"制定复习计划"</span>
+                        <span class="tag tag-trigger">"生成练习题"</span>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ 触发机制说明：</strong>
+                    <ul style="margin-top: 10px; padding-left: 22px; line-height: 1.8;">
+                        <li>触发是基于<strong>语义匹配</strong>而非精确的关键词匹配</li>
+                        <li>即使用户的表达方式不同，只要意图相同就能触发</li>
+                        <li>系统会自动判断请求类型（概念学习/练习题/复习计划/对比）</li>
+                        <li>如果同时匹配多个 Skill，系统会选择最相关的一个</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 核心功能 -->
+            <div class="section">
+                <h2>✨ 核心功能模块</h2>
+                
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h4>📖 1. 概念解析生成</h4>
+                        <p>为指定概念生成完整的学习资料：</p>
+                        <ul style="margin-top: 10px; padding-left: 20px; font-size: 0.95em;">
+                            <li>中英文名称</li>
+                            <li>通俗解释 + 数学定义</li>
+                            <li>核心公式（LaTeX）</li>
+                            <li>直观理解（类比/图示）</li>
+                            <li>实际应用场景</li>
+                            <li>常见误区提醒</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-item">
+                        <h4>🗺️ 2. 知识关联图谱</h4>
+                        <p>构建概念间的关联网络：</p>
+                        <ul style="margin-top: 10px; padding-left: 20px; font-size: 0.95em;">
+                            <li>前置知识依赖</li>
+                            <li>并行对比概念</li>
+                            <li>进阶延伸方向</li>
+                            <li>实际应用链条</li>
+                            <li>学习路径推荐</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-item">
+                        <h4>✏️ 3. 练习题生成</h4>
+                        <p>创建多层次的练习题库：</p>
+                        <ul style="margin-top: 10px; padding-left: 20px; font-size: 0.95em;">
+                            <li>基础理解题（选择/填空）</li>
+                            <li>计算练习题（带步骤）</li>
+                            <li>应用分析题（案例）</li>
+                            <li>编程实现题（Python/R）</li>
+                            <li>难度分级系统</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-item">
+                        <h4>📅 4. 学习路径规划</h4>
+                        <p>制定个性化的学习计划：</p>
+                        <ul style="margin-top: 10px; padding-left: 20px; font-size: 0.95em;">
+                            <li>基于课程大纲的顺序</li>
+                            <li>标注重点难点</li>
+                            <li>时间分配建议</li>
+                            <li>里程碑检查点</li>
+                            <li>自适应调整策略</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 工作流程 -->
+            <div class="section">
+                <h2>⚙️ 工作流程 (Workflow)</h2>
+                
+                <div class="workflow-diagram">
+                    <h3 style="color: #11998e; margin-bottom: 25px;">处理流程图</h3>
+                    
+                    <div style="font-size: 0.9em;">
+                        <div class="workflow-step">1️⃣ 接收<br>输入</div>
+                        <span class="arrow">→</span>
+                        <div class="workflow-step">2️⃣ 意图<br>识别</div>
+                        <span class="arrow">→</span>
+                        <div class="workflow-step">3️⃣ 知识<br>检索</div>
+                        <span class="arrow">→</span>
+                        <div class="workflow-step">4️⃣ 内容<br>组织</div>
+                        <span class="arrow">→</span>
+                        <div class="workflow-step">5️⃣ 质量<br>检查</div>
+                        <span class="arrow">→</span>
+                        <div class="workflow-step">6️⃣ 输出<br>保存</div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto;">
+                        <div class="code-block">
+<span class="code-comment"># 伪代码：工作流程实现</span>
+
+<span class="code-keyword">class</span> <span class="code-function">ConceptLearningGenerator</span>:
+    
+    <span class="code-keyword">def</span> <span class="code-function">process_request</span>(self, user_input):
+        <span class="code-comment">### Step 1: 接收输入 ###</span>
+        input_data = self.<span class="code-function">parse_input</span>(user_input)
+        
+        <span class="code-comment">### Step 2: 意图识别 ###</span>
+        intent = self.<span class="code-function">recognize_intent</span>(input_data)
+        <span class="code-comment"># 可能结果: "concept_learning", "exercise_gen", 
+        <span class="code-comment">#          "study_plan", "concept_comparison"</span>
+        
+        <span class="code-comment">### Step 3: 知识检索 ###</span>
+        knowledge = self.<span class="code-function">retrieve_knowledge</span>(
+            topic=input_data.topic,
+            depth=self.<span class="code-function">determine_depth</span>(intent)
+        )
+        
+        <span class="code-comment">### Step 4: 内容组织 ###</span>
+        content = self.<span class="code-function">organize_content</span>(
+            template=self.<span class="code-variable">SKILL_TEMPLATE</span>,
+            knowledge=knowledge,
+            user_level=input_data.user_level
+        )
+        
+        <span class="code-comment">### Step 5: 质量检查 ###</span>
+        quality_score = self.<span class="code-function">quality_check</span>(content)
+        <span class="code-keyword">if</span> quality_score < <span class="code-string">0.85</span>:
+            content = self.<span class="code-function">enhance_content</span>(content)
+        
+        <span class="code-comment">### Step 6: 输出保存 ###</span>
+        output_path = self.<span class="code-function">save_output</span>(
+            content=content,
+            format=<span class="code-string">"markdown"</span>,
+            category=intent.category
+        )
+        
+        <span class="code-keyword">return</span> output_path
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 输出模板 -->
+            <div class="section">
+                <h2>📝 输出模板结构</h2>
+                
+                <div class="skill-card">
+                    <h3><span class="skill-icon">📄</span> 标准输出格式</h3>
+                    <p>所有生成的学习资料都遵循以下统一的结构：</p>
+                </div>
+
+                <div class="example-box">
+                    <h4>📌 Markdown 模板示例</h4>
+                    <div class="code-block">
+# [概念名称] ([English Name])
+
+## 📚 一、概念概述
+[通俗易懂的解释]
+
+## 🎯 二、核心要点
+
+### 2.1 数学定义
+[严格的数学表达式]
+
+### 2.2 关键公式
+$$
+[LaTeX 公式]
+$$
+
+**变量说明：**
+- [符号]: [含义]
+
+### 2.3 直观理解
+[使用类比、图示等方式帮助理解]
+
+## 💡 三、应用场景
+
+### 3.1 在统计分析中的应用
+[具体例子]
+
+### 3.2 在大数据分析中的应用
+[具体例子]
+
+### 3.3 实际案例
+[真实数据集或业务场景]
+
+## ⚠️ 四、常见误区
+1. [误区1及纠正]
+2. [误区2及纠正]
+
+## 🔗 五、知识关联
+
+### 5.1 前置知识
+- [概念A]
+- [概念B]
+
+### 5.2 相关概念
+- [概念C]：[关系说明]
+
+### 5.3 进阶方向
+- [高级主题1]
+
+## 📝 六、练习题
+
+### 基础题
+[题目]
+
+### 计算题
+[题目及数据]
+
+### 编程实现
+```python
+# Python 代码示例
+[代码]
+```
+
+## 📚 七、推荐资源
+- [教材/文章/视频链接]
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>📊 模板统计信息：</strong>
+                    <ul style="margin-top: 10px; padding-left: 22px;">
+                        <li><strong>主要章节：</strong>7个（概述 → 要点 → 应用 → 误区 → 关联 → 练习 → 资源）</li>
+                        <li><strong>子章节：</strong>平均15-20个小节</li>
+                        <li><strong>典型篇幅：</strong>3000-5000字（不含代码）</li>
+                        <li><strong>包含元素：</strong>文字、LaTeX公式、代码块、列表、表格</li>
+                        <li><strong>格式标准：</strong>GitHub Flavored Markdown + MathJax</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 支持的主题范围 -->
+            <div class="section">
+                <h2>📚 支持的主题范围</h2>
+                
+                <div class="feature-grid">
+                    <div class="feature-item" style="border-left: 4px solid #e91e63;">
+                        <h4>📊 统计学基础</h4>
+                        <div style="margin-top: 10px;">
+                            <span class="tag tag-topic">描述性统计</span>
+                            <span class="tag tag-topic">概率分布</span>
+                            <span class="tag tag-topic">假设检验</span>
+                            <span class="tag tag-topic">回归分析</span>
+                            <span class="tag tag-topic">方差分析</span>
+                            <span class="tag tag-topic">非参数检验</span>
+                        </div>
+                    </div>
+
+                    <div class="feature-item" style="border-left: 4px solid #9c27b0;">
+                        <h4>🔍 大数据分析</h4>
+                        <div style="margin-top: 10px;">
+                            <span class="tag tag-topic">数据预处理</span>
+                            <span class="tag tag-topic">探索性分析(EDA)</span>
+                            <span class="tag tag-topic">降维技术</span>
+                            <span class="tag tag-topic">聚类算法</span>
+                            <span class="tag tag-topic">分类算法</span>
+                            <span class="tag tag-topic">时间序列</span>
+                        </div>
+                    </div>
+
+                    <div class="feature-item" style="border-left: 4px solid #3f51b5;">
+                        <h4>📈 数据可视化</h4>
+                        <div style="margin-top: 10px;">
+                            <span class="tag tag-topic">统计图表</span>
+                            <span class="tag tag-topic">热力图</span>
+                            <span class="tag tag-topic">交互式可视化</span>
+                            <span class="tag tag-topic">报告级设计</span>
+                        </div>
+                    </div>
+
+                    <div class="feature-item" style="border-left: 4px solid #009688;">
+                        <h4>💻 编程实践</h4>
+                        <div style="margin-top: 10px;">
+                            <span class="tag tag-format">Python</span>
+                            <span class="tag tag-format">R语言</span>
+                            <span class="tag tag-format">NumPy/Pandas</span>
+                            <span class="tag tag-format">Matplotlib</span>
+                            <span class="tag tag-format">Scikit-learn</span>
+                            <span class="tag tag-format">Jupyter</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 使用示例 -->
+            <div class="section">
+                <h2>💡 使用示例 (Usage Examples)</h2>
+                
+                <div class="example-box">
+                    <h4>🎯 示例 1：学习单个概念</h4>
+                    <p><strong>用户输入：</strong></p>
+                    <div class="code-block" style="color: #fff;">帮我学习"中心极限定理"</div>
+                    
+                    <p style="margin-top: 15px;"><strong>AI 输出：</strong></p>
+                    <ul style="padding-left: 25px; line-height: 2;">
+                        <li>✅ 生成完整的中心极限定理学习资料（约4000字）</li>
+                        <li>✅ 包含定理的严格数学表述和证明思路</li>
+                        <li>✅ 提供直观解释（样本均值的分布趋近正态）</li>
+                        <li>✅ 包含 Python 模拟实验代码（演示 CLT 效果）</li>
+                        <li>✅ 列出实际应用（置信区间、假设检验的基础）</li>
+                        <li>✅ 生成 5 道配套练习题（从基础到编程）</li>
+                        <li>✅ 保存到：<code>learning-materials/概率分布/中心极限定理.md</code></li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>📅 示例 2：制定学习计划</h4>
+                    <p><strong>用户输入：</strong></p>
+                    <div class="code-block" style="color: #fff;">我要准备期末考试，帮我规划统计学的复习计划</div>
+                    
+                    <p style="margin-top: 15px;"><strong>AI 输出：</strong></p>
+                    <ul style="padding-left: 25px; line-height: 2;">
+                        <li>✅ 生成 4 周倒计时学习路线图</li>
+                        <li>✅ 每周重点知识点清单（按重要性排序）</li>
+                        <li>✅ 建议每天的时间分配（理论 vs 练习）</li>
+                        <li>✅ 提供每章的自测题库（每章 10 题）</li>
+                        <li>✅ 总结高频考点（基于历年真题规律）</li>
+                        <li>✅ 标注易错点和常见陷阱</li>
+                        <li>✅ 保存到：<code>learning-materials/复习计划/期末4周计划.md</code></li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>⚖️ 示例 3：对比相关概念</h4>
+                    <p><strong>用户输入：</strong></p>
+                    <div class="code-block" style="color: #fff;">解释一下均值、中位数和众数的区别和使用场景</div>
+                    
+                    <p style="margin-top: 15px;"><strong>AI 输出：</strong></p>
+                    <ul style="padding-left: 25px; line-height: 2;">
+                        <li>✅ 三者的定义和计算方法详解</li>
+                        <li>✅ 对比表格（优缺点、适用条件、抗干扰性）</li>
+                        <li>✅ 实际数据案例演示（含偏态分布情况）</li>
+                        <li>✅ 选择建议流程图（何时用哪个指标）</li>
+                        <li>✅ Python/R 计算代码示例</li>
+                        <li>✅ 保存到：<code>learning-materials/描述性统计/集中趋势度量对比.md</code></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 特色功能 -->
+            <div class="section">
+                <h2>🎨 特色功能亮点</h2>
+                
+                <div class="skill-card">
+                    <h3><span class="skill-icon">🌈</span> 多模态解释</h3>
+                    <p>适应不同学习风格，提供多种表达形式：</p>
+                    <div class="feature-grid" style="margin-top: 15px;">
+                        <div class="feature-item">
+                            <h4>📝 文字解释</h4>
+                            <p>通俗语言 + 专业术语双重表述</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>🧮 数学公式</h4>
+                            <p>LaTeX 格式，支持 MathJax 渲染</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>🎨 图形描述</h4>
+                            <p>ASCII 图 / Mermaid 图表描述</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>💻 代码示例</h4>
+                            <p>Python/R 可运行完整代码</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <h3><span class="skill-icon">🔄</span> 循序渐进原则</h3>
+                    <p>内容组织遵循认知规律：</p>
+                    <ol style="padding-left: 25px; line-height: 2.2; margin-top: 15px;">
+                        <li><strong>直觉引入：</strong>从生活实例或简单问题开始</li>
+                        <li><strong>形式定义：</strong>给出严格的数学表述</li>
+                        <li><strong>深入剖析：</strong>解释为什么这样定义</li>
+                        <li><strong>实际应用：</strong>展示在真实场景中的用途</li>
+                        <li><strong>动手实践：</strong>通过代码或练习巩固</li>
+                        <li><strong>拓展延伸：</strong>关联其他概念和进阶方向</li>
+                    </ol>
+                </div>
+
+                <div class="skill-card">
+                    <h3><span class="skill-icon">🎯</span> 考试导向</h3>
+                    <p>特别适合备考学生的学习需求：</p>
+                    <ul style="padding-left: 25px; line-height: 2; margin-top: 15px;">
+                        <li>✅ 标注<strong>高频考点</strong>（基于历年真题分析）</li>
+                        <li>✅ 提供<strong>典型例题</strong>（带详细解答过程）</li>
+                        <li>✅ 总结<strong>解题技巧</strong>（快速方法、常见套路）</li>
+                        <li>✅ 强调<strong>易错点</strong>（学生常犯的错误）</li>
+                        <li>✅ 提供<strong>记忆口诀</strong>（帮助记忆复杂公式）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 扩展与集成 -->
+            <div class="section">
+                <h2>🔗 扩展与协同能力</h2>
+                
+                <div class="info-box">
+                    <strong>🤝 此 Skill 可以与其他 Skill 协同工作：</strong>
+                    <table style="margin-top: 15px;">
+                        <thead>
+                            <tr>
+                                <th>协同 Skill</th>
+                                <th>结合方式</th>
+                                <th>增强效果</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>文档生成 Skill</strong></td>
+                                <td>将生成的学习资料整合为长篇笔记或复习手册</td>
+                                <td>产出完整的 PDF/Word 文档</td>
+                            </tr>
+                            <tr>
+                                <td><strong>数据处理 Skill</strong></td>
+                                <td>直接分析用户提供的数据集作为案例</td>
+                                <td>理论与真实数据结合</td>
+                            </tr>
+                            <tr>
+                                <td><strong>可视化 Skill</strong></td>
+                                <td>为统计概念生成交互式图表和学习曲线</td>
+                                <td>直观展示抽象概念</td>
+                            </tr>
+                            <tr>
+                                <td><strong>编程辅助 Skill</strong></td>
+                                <td>完成完整的数据分析项目作业</td>
+                                <td>端到端的实战能力培养</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 注意事项 -->
+            <div class="section">
+                <h2>⚠️ 使用注意事项</h2>
+                
+                <div class="warning-box">
+                    <ol style="padding-left: 25px; line-height: 2;">
+                        <li>
+                            <strong>准确性优先</strong><br>
+                            <small>所有数学公式和定义必须准确无误。如果对某个细节不确定，应明确标注。</small>
+                        </li>
+                        <li>
+                            <strong>循序渐进</strong><br>
+                            <small>根据用户的水平动态调整内容的深度和广度。避免一次性输出过多信息。</small>
+                        </li>
+                        <li>
+                            <strong>实用导向</strong><br>
+                            <small>强调在实际数据分析中的应用，而不仅仅是理论推导。</small>
+                        </li>
+                        <li>
+                            <strong>互动性</strong><br>
+                            <small>鼓励用户提问和深入探讨。每个生成的资料都应该是对话的起点，而不是终点。</small>
+                        </li>
+                        <li>
+                            <strong>及时更新</strong><br>
+                            <small>根据用户的反馈持续改进内容质量和生成逻辑。</small>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>⚡ Skill 说明文档 | concept-learning-generator v1.0.0 | Powered by WorkBuddy</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                📅 最后更新：2026-09-03 | 
+                🔗 <a href="https://github.com/katixia1145/statistics-data-analysis">GitHub 仓库</a> | 
+                📧 反馈与建议欢迎提交 Issue
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

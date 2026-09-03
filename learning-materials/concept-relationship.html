@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>概念关系图谱 - 统计与大数据分析学习系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 45px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 25px;
+            border-left: 5px solid #764ba2;
+            padding-left: 15px;
+        }
+        
+        /* 图谱样式 */
+        .graph-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 35px;
+            margin: 30px 0;
+            overflow-x: auto;
+        }
+        
+        .knowledge-graph {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 900px;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        .graph-level {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+        
+        .concept-node {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            padding: 12px 18px;
+            min-width: 140px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .concept-node:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            border-color: #764ba2;
+            z-index: 10;
+        }
+        
+        .concept-node.core { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            border-color: transparent;
+            font-size: 1.1em;
+            padding: 15px 25px;
+        }
+        
+        .concept-node.foundation { 
+            border-color: #28a745; 
+            color: #155724;
+        }
+        
+        .concept-node.intermediate { 
+            border-color: #fd7e14; 
+            color: #856404;
+        }
+        
+        .concept-node.advanced { 
+            border-color: #dc3545; 
+            color: #721c24;
+        }
+        
+        .concept-node.application { 
+            border-color: #17a2b8; 
+            color: #0c5460;
+        }
+        
+        .connector {
+            width: 2px;
+            height: 25px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            margin: 0 auto;
+        }
+        
+        .branch-connector {
+            position: absolute;
+            height: 2px;
+            background: #999;
+            z-index: 0;
+        }
+        
+        /* 关系表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* 卡片样式 */
+        .relation-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #fd7e14;
+        }
+        
+        .relation-card h3 {
+            color: #d63447;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+        
+        .pathway-card {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #11998e;
+        }
+        
+        .pathway-card h3 {
+            color: #00695c;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+        
+        /* 标签 */
+        .tag {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+        
+        .tag-prereq { background: #28a745; color: white; }
+        .tag-related { background: #17a2b8; color: white; }
+        .tag-advanced { background: #dc3545; color: white; }
+        .tag-application { background: #fd7e14; color: white; }
+        .tag-tool { background: #6f42c1; color: white; }
+        
+        /* 路径步骤 */
+        .path-step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .path-step:hover {
+            transform: translateX(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+        
+        .step-content h4 {
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .step-content p {
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        /* 信息框 */
+        .info-box {
+            background: #e8eaf6;
+            border-left: 5px solid #3f51b5;
+            padding: 18px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .highlight-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        footer {
+            background: #f8f9fa;
+            padding: 25px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 100;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85em;
+            font-weight: normal;
+            line-height: 1.5;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗺️ 概念关系图谱</h1>
+            <p>统计学与大数据分析知识体系全景图</p>
+        </div>
+
+        <div class="content">
+            <!-- 知识体系总览 -->
+            <div class="section">
+                <h2>🌐 知识体系总览</h2>
+                
+                <div class="info-box">
+                    <strong>💡 为什么需要概念关系图谱？</strong><br>
+                    统计学和大数据分析的知识点不是孤立的，而是形成了一个<strong>紧密关联的网络</strong>。
+                    理解概念之间的关系可以帮助你：
+                    <ul style="margin-top: 10px; padding-left: 22px; line-height: 1.9;">
+                        <li>建立系统的知识框架，避免碎片化学习</li>
+                        <li>理解学习的先后顺序（哪些是前置知识）</li>
+                        <li>发现知识间的联系，加深理解</li>
+                        <li>制定高效的学习路径</li>
+                        <li>在解决实际问题时能够综合运用多个概念</li>
+                    </ul>
+                </div>
+
+                <div class="graph-container">
+                    <h3 style="text-align: center; color: #667eea; margin-bottom: 30px;">
+                        📊 核心知识网络结构
+                    </h3>
+                    
+                    <div class="knowledge-graph">
+                        <!-- Level 0: 核心主题 -->
+                        <div class="graph-level">
+                            <div class="concept-node core tooltip">
+                                🎯 统计学与大数据分析
+                                <span class="tooltiptext">核心领域：数据的收集、分析、解释和可视化</span>
+                            </div>
+                        </div>
+                        
+                        <div class="connector"></div>
+                        
+                        <!-- Level 1: 基础层 -->
+                        <div class="graph-level">
+                            <div class="concept-node foundation tooltip">
+                                📊 描述性统计
+                                <span class="tooltiptext">数据汇总：均值、中位数、方差、标准差等</span>
+                            </div>
+                            <div class="concept-node foundation tooltip">
+                                🎲 概率论基础
+                                <span class="tooltiptext">随机事件、概率分布、期望值、方差</span>
+                            </div>
+                            <div class="concept-node foundation tooltip">
+                                💻 编程基础
+                                <span class="tooltiptext">Python/R语言、数据处理库、可视化工具</span>
+                            </div>
+                        </div>
+                        
+                        <div class="connector"></div>
+                        
+                        <!-- Level 2: 中级层 -->
+                        <div class="graph-level">
+                            <div class="concept-node intermediate tooltip">
+                                📈 概率分布
+                                <span class="tooltiptext">正态分布、二项分布、泊松分布、t分布等</span>
+                            </div>
+                            <div class="concept-node intermediate tooltip">
+                                🔍 抽样理论
+                                <span class="tooltiptext">抽样方法、抽样分布、中心极限定理</span>
+                            </div>
+                            <div class="concept-node intermediate tooltip">
+                                📉 相关分析
+                                <span class="tooltiptext">相关系数、散点图、相关性检验</span>
+                            </div>
+                        </div>
+                        
+                        <div class="connector"></div>
+                        
+                        <!-- Level 3: 高级层 -->
+                        <div class="graph-level">
+                            <div class="concept-node advanced tooltip">
+                                🧪 假设检验
+                                <span class="tooltiptext">t检验、卡方检验、F检验、p值、置信区间</span>
+                            </div>
+                            <div class="concept-node advanced tooltip">
+                                📊 回归分析
+                                <span class="tooltiptext">简单回归、多元回归、逻辑回归</span>
+                            </div>
+                            <div class="concept-node advanced tooltip">
+                                🔬 方差分析
+                                <span class="tooltiptext">单因素ANOVA、多因素ANOVA、事后检验</span>
+                            </div>
+                        </div>
+                        
+                        <div class="connector"></div>
+                        
+                        <!-- Level 4: 应用层 -->
+                        <div class="graph-level">
+                            <div class="concept-node application tooltip">
+                                🤖 机器学习
+                                <span class="tooltiptext">监督学习、无监督学习、模型评估</span>
+                            </div>
+                            <div class="concept-node application tooltip">
+                                📊 数据挖掘
+                                <span class="tooltiptext">聚类、分类、关联规则、降维</span>
+                            </div>
+                            <div class="concept-node application tooltip">
+                                📈 时间序列
+                                <span class="tooltiptext">ARIMA、趋势分析、预测建模</span>
+                            </div>
+                            <div class="concept-node application tooltip">
+                                🎨 数据可视化
+                                <span class="tooltiptext">交互式图表、报告设计、Dashboard</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 详细关系表 -->
+            <div class="section">
+                <h2>🔗 概念间详细关系</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">核心概念</th>
+                            <th style="width: 20%;">关系类型</th>
+                            <th style="width: 25%;">关联概念</th>
+                            <th style="width: 35%;">关系说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 描述性统计的关系 -->
+                        <tr>
+                            <td rowspan="3"><strong>描述性统计</strong></td>
+                            <td><span class="tag tag-prereq">前置</span></td>
+                            <td>概率论基础</td>
+                            <td>理解数据分布特征需要概率知识</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-related">相关</span></td>
+                            <td>数据可视化</td>
+                            <td>图表是描述性统计的直观表达</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-prereq">前置</span></td>
+                            <td>假设检验</td>
+                            <td>检验基于样本统计量的推断</td>
+                        </tr>
+
+                        <!-- 概率分布的关系 -->
+                        <tr>
+                            <td rowspan="4"><strong>概率分布</strong></td>
+                            <td><span class="tag tag-prereq">前置</span></td>
+                            <td>假设检验</td>
+                            <td>t检验依赖t分布，卡方检验依赖卡方分布</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-related">相关</span></td>
+                            <td>中心极限定理</td>
+                            <td>CLT解释了正态分布的普遍性</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-prereq">前置</span></td>
+                            <td>置信区间</td>
+                            <td>区间估计基于抽样分布</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-advanced">进阶</span></td>
+                            <td>贝叶斯统计</td>
+                            <td>后验分布是贝叶斯推断的核心</td>
+                        </tr>
+
+                        <!-- 假设检验的关系 -->
+                        <tr>
+                            <td rowspan="4"><strong>假设检验</strong></td>
+                            <td><span class="tag tag-prereq">前置</span></td>
+                            <td>回归分析</td>
+                            <td>回归系数的显著性检验</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-prereq">前置</span></td>
+                            <td>方差分析</td>
+                            <td>ANOVA是假设检验的扩展</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-related">相关</span></td>
+                            <td>p值</td>
+                            <td>p值是假设检验的核心决策工具</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-application">应用</span></td>
+                            <td>A/B测试</td>
+                            <td>A/B测试是假设检验的商业应用</td>
+                        </tr>
+
+                        <!-- 回归分析的关系 -->
+                        <tr>
+                            <td rowspan="3"><strong>回归分析</strong></td>
+                            <td><span class="tag tag-prereq">前置</span></td>
+                            <td>机器学习</td>
+                            <td>线性回归是最基础的监督学习算法</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-related">相关</span></td>
+                            <td>相关分析</td>
+                            <td>回归建立在相关性的基础上</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-advanced">进阶</span></td>
+                            <td>广义线性模型</td>
+                            <td>逻辑回归、泊松回归等扩展</td>
+                        </tr>
+
+                        <!-- 机器学习的关系 -->
+                        <tr>
+                            <td rowspan="3"><strong>机器学习</strong></td>
+                            <td><span class="tag tag-prereq">前置</span></td>
+                            <td>深度学习</td>
+                            <td>神经网络是ML的高级形式</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-application">应用</span></td>
+                            <td>自然语言处理</td>
+                            <td>NLP使用ML处理文本数据</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-application">应用</span></td>
+                            <td>计算机视觉</td>
+                            <td>图像识别基于CNN等ML模型</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 学习路径推荐 -->
+            <div class="section">
+                <h2>🛤️ 推荐学习路径</h2>
+                
+                <div class="pathway-card">
+                    <h3>📍 路径一：统计学基础路线（适合初学者）</h3>
+                    
+                    <div class="path-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>📊 描述性统计（第1-2周）</h4>
+                            <p>学习数据类型、集中趋势度量（均值/中位数/众数）、离散程度度量（方差/标准差）、分布形态（偏度/峰度）。这是所有统计分析的基础。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>🎲 概率论基础（第3-4周）</h4>
+                            <p>掌握概率的基本定义、条件概率、独立性、全概率公式和贝叶斯定理。这些是理解统计推断的理论基石。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>📈 概率分布（第5-6周）</h4>
+                            <p>深入学习正态分布（最重要！）、二项分布、泊松分布、t分布、卡方分布、F分布。理解每种分布的特点和应用场景。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>🔍 抽样与中心极限定理（第7周）</h4>
+                            <p>理解抽样的重要性、不同抽样方法、抽样分布的概念。<strong>中心极限定理</strong>是连接样本与总体的桥梁，必须深入理解。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>🧪 假设检验（第8-10周）</h4>
+                            <p>学习假设检验的逻辑流程、第一类/第二类错误、p值的正确解读。掌握t检验、卡方检验、F检验的具体应用。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h4>📉 回归分析与相关（第11-12周）</h4>
+                            <p>从相关系数到简单线性回归，再到多元回归。理解最小二乘法、回归诊断、模型解释。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pathway-card">
+                    <h3>🚀 路径二：大数据分析实战路线（有编程基础者）</h3>
+                    
+                    <div class="path-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>💻 数据处理工具链（第1周）</h4>
+                            <p>快速掌握 Python (NumPy/Pandas) 或 R 语言的基础操作：数据读取、清洗、转换、分组聚合。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>📊 探索性数据分析 EDA（第2-3周）</h4>
+                            <p>结合描述性统计和数据可视化，学会用代码进行完整的数据探索：缺失值处理、异常值检测、分布分析。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>📈 统计建模入门（第4-6周）</h4>
+                            <p>实现假设检验和回归分析的完整流程：从提出问题、选择方法、编写代码、解读结果到得出结论。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>🤖 机器学习基础（第7-10周）</h4>
+                            <p>学习监督学习（分类/回归）和无监督学习（聚类/降维）。使用 Scikit-learn 完成端到端的建模项目。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>🎨 高级可视化与报告（第11-12周）</h4>
+                            <p>掌握交互式可视化（Plotly/Bokeh）、自动化报告生成、Dashboard 设计。产出专业的数据分析作品集。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 概念对比矩阵 -->
+            <div class="section">
+                <h2>⚖️ 易混淆概念对比</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 22%;">概念 A</th>
+                            <th style="width: 22%;">概念 B</th>
+                            <th style="width: 28%;">核心区别</th>
+                            <th style="width: 28%;">如何选择</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>均值 (Mean)</strong></td>
+                            <td><strong>中位数 (Median)</strong></td>
+                            <td>均值受极端值影响大；中位数更稳健</td>
+                            <td>数据对称用均值；偏态或含异常值用中位数</td>
+                        </tr>
+                        <tr>
+                            <td><strong>p值</strong></td>
+                            <td><strong>显著性水平 α</strong></td>
+                            <td>p值是根据数据计算的概率；α是预先设定的阈值</td>
+                            <td>比较 p 与 α 来做决策：p<α 则拒绝H₀</td>
+                        </tr>
+                        <tr>
+                            <td><strong>相关 (Correlation)</strong></td>
+                            <td><strong>因果 (Causation)</strong></td>
+                            <td>相关只是关联；因果意味着A导致B</td>
+                            <td>相关≠因果！需实验设计验证因果关系</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type I Error</strong></td>
+                            <td><strong>Type II Error</strong></td>
+                            <td>I型：误拒真假设（假阳性）；II型：未拒假假设（假阴性）</td>
+                            <td>根据后果严重性权衡：医疗诊断宁可是II型</td>
+                        </tr>
+                        <tr>
+                            <td><strong>置信区间</strong></td>
+                            <td><strong>预测区间</strong></td>
+                            <td>CI估计参数范围；PI预测单个观测值范围</td>
+                            <td>估计总体特征用CI；预测新个体用PI</td>
+                        </tr>
+                        <tr>
+                            <td><strong>训练集</strong></td>
+                            <td><strong>测试集</strong></td>
+                            <td>训练集用于构建模型；测试集用于评估泛化能力</td>
+                            <td>绝不能用测试集的数据来调参！</td>
+                        </tr>
+                        <tr>
+                            <td><strong>偏差 (Bias)</strong></td>
+                            <td><strong>方差 (Variance)</strong></td>
+                            <td>偏差：模型的系统性误差；方差：模型对数据的敏感度</td>
+                            <td>偏差-方差权衡：寻找最佳复杂度</td>
+                        </tr>
+                        <tr>
+                            <td><strong>过拟合 (Overfitting)</strong></td>
+                            <td><strong>欠拟合 (Underfitting)</strong></td>
+                            <td>过拟合：在训练集表现好但泛化差；欠拟合：连训练集都学不好</td>
+                            <td>通过交叉验证检测，调整模型复杂度</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 知识依赖图 -->
+            <div class="section">
+                <h2>🔄 知识依赖关系详解</h2>
+                
+                <div class="relation-card">
+                    <h3>📐 以"假设检验"为中心的依赖网络</h3>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4 style="color: #d63447; margin-bottom: 10px;">⬆️ 必须先掌握的前置知识：</h4>
+                        <div style="padding-left: 20px; line-height: 2;">
+                            <span class="tag tag-prereq">描述性统计</span> → 需要理解样本统计量（均值、标准差）
+                            <br>
+                            <span class="tag tag-prereq">概率分布</span> → 特别是正态分布和t分布的性质
+                            <br>
+                            <span class="tag tag-prereq">抽样理论</span> → 理解抽样分布和标准误
+                            <br>
+                            <span class="tag tag-prereq">中心极限定理</span> → 大样本下统计量的分布规律
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4 style="color: #d63447; margin-bottom: 10px;">⬇️ 学完后可以继续学习：</h4>
+                        <div style="padding-left: 20px; line-height: 2;">
+                            <span class="tag tag-advanced">回归分析</span> → 回归系数的显著性检验
+                            <br>
+                            <span class="tag tag-advanced">方差分析 (ANOVA)</span> → 多组均值比较的假设检验
+                            <br>
+                            <span class="tag tag-advanced">非参数检验</span> → 不满足正态假设时的替代方法
+                            <br>
+                            <span class="tag tag-application">A/B测试</span> → 假设检验在产品优化中的实际应用
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relation-card">
+                    <h3>🤖 以"机器学习"为中心的依赖网络</h3>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4 style="color: #d63447; margin-bottom: 10px;">⬆️ 必须先掌握的前置知识：</h4>
+                        <div style="padding-left: 20px; line-height: 2;">
+                            <span class="tag tag-prereq">线性代数</span> → 向量、矩阵运算、特征分解
+                            <br>
+                            <span class="tag tag-prereq">微积分</span> → 导数、梯度、优化
+                            <br>
+                            <span class="tag tag-prereq">概率统计</span> → 概率分布、贝叶斯、期望
+                            <br>
+                            <span class="tag tag-prereq">编程能力</span> → Python/R、数据处理库
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4 style="color: #d63447; margin-bottom: 10px;">⬇️ 学完后可以继续学习：</h4>
+                        <div style="padding-left: 20px; line-height: 2;">
+                            <span class="tag tag-advanced">深度学习</span> → 神经网络、CNN、RNN、Transformer
+                            <br>
+                            <span class="tag tag-advanced">强化学习</span> → 智能体、策略优化
+                            <br>
+                            <span class="tag tag-application">NLP/CV</span> → 自然语言处理、计算机视觉应用
+                            <br>
+                            <span class="tag tag-application">MLOps</span> → 模型部署、监控、持续集成
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 使用建议 -->
+            <div class="section">
+                <h2>💡 如何有效利用概念关系图谱</h2>
+                
+                <div class="highlight-box">
+                    <strong>🎯 场景化建议：</strong>
+                    <ol style="margin-top: 15px; padding-left: 25px; line-height: 2.2;">
+                        <li>
+                            <strong>开始学习新概念前：</strong><br>
+                            <small>先查看它的"前置知识"，确保你已经掌握了必要的基础。如果发现有缺口，先去补齐。</small>
+                        </li>
+                        <li>
+                            <strong>学习过程中遇到困难：</strong><br>
+                            <small>检查是否是因为某个前置概念没理解透彻。回到基础知识重新巩固往往能事半功倍。</small>
+                        </li>
+                        <li>
+                            <strong>完成一个概念的学习后：</strong><br>
+                            <small>不要急着跳到下一个！看看"相关概念"和"进阶方向"，建立横向联系，加深理解。</small>
+                        </li>
+                        <li>
+                            <strong>准备考试复习时：</strong><br>
+                            <small>按照知识依赖关系从底层往上复习，确保每个层次都扎实。重点标注高频考点。</small>
+                        </li>
+                        <li>
+                            <strong>做项目或解决实际问题时：</strong><br>
+                            <small>沿着"应用链条"找到相关的概念组合，系统地运用所学知识解决问题。</small>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="info-box" style="margin-top: 25px;">
+                    <strong>🔧 结合 Skill 的使用方式：</strong><br>
+                    <p style="margin-top: 10px;">
+                        当你使用 <code>concept-learning-generator</code> Skill 时，
+                        AI 会自动参考这个概念关系图谱来：
+                    </p>
+                    <ul style="margin-top: 10px; padding-left: 22px; line-height: 1.9;">
+                        <li>在生成的资料中包含相关概念的链接</li>
+                        <li>根据你的当前水平推荐合适的学习顺序</li>
+                        <li>在练习题中融入跨概念的综合应用</li>
+                        <li>在学习计划中考虑知识点之间的依赖关系</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🗺️ 概念关系图谱 | 统计与大数据分析学习系统 | Powered by WorkBuddy</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                📅 最后更新：2026-09-03 | 
+                🔗 <a href="https://github.com/katixia1145/statistics-data-analysis">GitHub 仓库</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // 为概念节点添加点击事件（可选的交互功能）
+        document.querySelectorAll('.concept-node').forEach(node => {
+            node.addEventListener('click', function() {
+                const concept = this.textContent.trim().replace(/[^\u4e00-\u9fa5a-zA-Z]/g, '');
+                alert(`你点击了: ${concept}\n\n可以在这里添加跳转到详细学习资料的功能`);
+            });
+        });
+    </script>
+</body>
+</html>

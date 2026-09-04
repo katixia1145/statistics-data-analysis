@@ -212,26 +212,6 @@ statistics-data-analysis/
 
 ---
 
-## 📚 推荐学习资源
-
-### 统计与大数据分析
-- 《统计学》（贾俊平）- 经典教材
-- 《深入浅出统计学》- 入门必读
-- 《Python数据分析与挖掘实战》- 实战指南
-
-### AI 与机器学习
-- 《人工智能：现代方法》（Russell & Norvig）
-- Deep Learning Specialization (Coursera - Andrew Ng)
-- WorkBuddy 官方文档
-
-### 在线工具
-- Khan Academy Statistics
-- Jupyter Notebook（交互式编程）
-- RStudio（R 语言环境）
-- WorkBuddy（AI 学习助手）
-
----
-
 ## 🤝 贡献指南
 
 欢迎贡献！你可以：

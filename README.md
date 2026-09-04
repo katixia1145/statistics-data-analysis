@@ -108,7 +108,7 @@ statistics-data-analysis/
 
 | 文档 | 内容概览 | 类比 | 来源数 |
 |------|---------|------|--------|
-| **[agent.md](./learning-materials/agent.md)** | Agent（智能体）概念深度解析 | 🚗 自动驾驶汽车 | 12个 |
+| **[agent.md](./learning-materials/agent.md)** | Agent（智能体）概念深度解析 | 🚗 自动驾驶汽车 | 15个 |
 | **[llm-context.md](./learning-materials/llm-context.md)** | 大数据分析的上下文（Context）机制全解 | 📊 数据分析师的工作记忆 | 13个 |
 | **[skill.md](./learning-materials/skill.md)** | Skill（技能模块）完整说明 | 👨‍🍳 厨师的食谱卡 | 13个 |
 | **[concept-relationship.md](./learning-materials/concept-relationship.md)** | Agent、Context、Skill 三者关系图谱 | 🔗 Mermaid 图 + 表格 | - |
@@ -119,7 +119,7 @@ statistics-data-analysis/
 ✅ **核心机制** - 技术细节和组成结构  
 ✅ **应用场景** - 真实案例（如阿里智能客服、GitHub Copilot）  
 ✅ **易混淆问题** - 对比表格澄清常见误区  
-✅ **可核查来源** - 教材、论文、官方文档链接（共 60+ 个）
+✅ **可核查来源** - 教材、论文、官方文档链接（共 48 个去重链接）
 
 ---
 
@@ -155,7 +155,7 @@ statistics-data-analysis/
 - 核心机制（感知→认知→记忆→行动→学习 5大组件）
 - 应用场景（阿里智能客服、GitHub Copilot）
 - 易混淆问题（vs Bot / Algorithm / Model）
-- 12 个权威来源链接
+- 15 个权威来源链接
 
 ### 示例 3：理解概念间的关系
 **输入：**
@@ -244,7 +244,7 @@ statistics-data-analysis/
 |------|------|
 | **Skill 版本** | v2.0 |
 | **已生成学习资料** | 8 份（4 Markdown + 4 HTML） |
-| **引用来源总数** | 60+ 个 |
+| **引用来源总数** | 48 个（跨文档去重链接） |
 | **Git 提交次数** | 9 次 |
 | **文档总行数** | 5100+ 行 |
 | **最后更新** | 2026-09-04 |

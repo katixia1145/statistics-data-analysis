@@ -86,7 +86,7 @@ statistics-data-analysis/
 │   │
 │   │── 📖 Markdown 学习资料（推荐阅读）
 │   │   ├── agent.md                 # Agent（智能体）概念深度解析
-│   │   ├── llm-context.md           # LLM Context（上下文）机制全解
+│   │   ├── llm-context.md           # 大数据分析的上下文（Context）机制全解
 │   │   ├── skill.md                 # Skill（技能模块）完整说明
 │   │   └── concept-relationship.md  # 三概念关系图谱（含 Mermaid 图）
 │   │
@@ -109,7 +109,7 @@ statistics-data-analysis/
 | 文档 | 内容概览 | 类比 | 来源数 |
 |------|---------|------|--------|
 | **[agent.md](./learning-materials/agent.md)** | Agent（智能体）概念深度解析 | 🚗 自动驾驶汽车 | 12个 |
-| **[llm-context.md](./learning-materials/llm-context.md)** | LLM Context（上下文）机制全解 | 📝 考试学生的工作记忆 | 13个 |
+| **[llm-context.md](./learning-materials/llm-context.md)** | 大数据分析的上下文（Context）机制全解 | 📊 数据分析师的工作记忆 | 13个 |
 | **[skill.md](./learning-materials/skill.md)** | Skill（技能模块）完整说明 | 👨‍🍳 厨师的食谱卡 | 13个 |
 | **[concept-relationship.md](./learning-materials/concept-relationship.md)** | Agent、Context、Skill 三者关系图谱 | 🔗 Mermaid 图 + 表格 | - |
 

@@ -39,6 +39,12 @@ env/
 # OS files
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak
 
 # Data files (large)
 *.csv

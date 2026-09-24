@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python 基础语法 · 学习资料目录</title>
+<style>
+  :root{
+    --bg:#f6f7f9;
+    --card:#ffffff;
+    --ink:#1f2328;
+    --ink-2:#4a5560;
+    --ink-3:#8b949e;
+    --line:#e3e6ea;
+    --accent:#2f6feb;
+    --c1:#2f6feb; --c2:#0f9d8f; --c3:#b4530b; --c4:#8b3ec4; --c5:#c0392b; --c6:#4b7a1f;
+    --mono:"Cascadia Code","JetBrains Mono",Consolas,"Courier New",monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:40px 24px 72px;
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+    line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header{border-bottom:2px solid var(--line);padding-bottom:26px;margin-bottom:34px;}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:600;}
+  h1{font-size:34px;line-height:1.25;margin:10px 0 12px;letter-spacing:-.5px;}
+  .sub{color:var(--ink-2);font-size:15.5px;margin:0;max-width:760px;}
+  .stats{display:flex;flex-wrap:wrap;gap:26px;margin-top:22px;}
+  .stat b{display:block;font-size:24px;font-weight:700;color:var(--accent);line-height:1.2;}
+  .stat span{font-size:12.5px;color:var(--ink-3);}
+
+  h2{font-size:20px;margin:44px 0 16px;display:flex;align-items:center;gap:10px;}
+  h2::before{content:"";width:4px;height:20px;border-radius:2px;background:var(--accent);}
+
+  /* 学习路径 */
+  .path{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;}
+  .step{
+    flex:1 1 148px;background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px;position:relative;
+  }
+  .arrow{display:flex;align-items:center;color:var(--ink-3);padding:0 9px;font-size:17px;flex:0 0 auto;}
+  .step .n{font-size:11.5px;font-weight:700;letter-spacing:.08em;color:var(--ink-3);}
+  .step .t{font-weight:600;font-size:15px;margin-top:3px;}
+  .step .d{font-size:12.5px;color:var(--ink-2);margin-top:5px;line-height:1.55;}
+
+  /* 章节卡 */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px;}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:20px 20px 18px;display:flex;flex-direction:column;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  .card:hover{border-color:#c9d2dd;box-shadow:0 4px 18px rgba(31,35,40,.07);}
+  .card-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .badge{
+    width:42px;height:42px;flex:0 0 42px;border-radius:10px;display:grid;place-items:center;
+    font-weight:700;font-size:16px;color:#fff;
+  }
+  .card h3{margin:0;font-size:17.5px;letter-spacing:-.2px;}
+  .card .fn{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-top:1px;}
+  .card ul{margin:0;padding-left:19px;font-size:13.8px;color:var(--ink-2);}
+  .card li{margin-bottom:5px;}
+  .card li b{color:var(--ink);font-weight:600;}
+  .meta{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);
+        display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--ink-3);}
+  .meta i{font-style:normal;background:#eef1f5;border-radius:5px;padding:2px 8px;}
+  .card a{color:var(--accent);text-decoration:none;font-size:13px;font-weight:600;}
+  .card a:hover{text-decoration:underline;}
+
+  /* 三栏说明 */
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;}
+  .box h4{margin:0 0 8px;font-size:15px;}
+  .box p{margin:0;font-size:13.5px;color:var(--ink-2);}
+  code{
+    font-family:var(--mono);font-size:12.5px;background:#eef1f5;
+    border-radius:5px;padding:1.5px 6px;color:#b4263c;
+  }
+  pre{
+    font-family:var(--mono);font-size:12.5px;background:#f2f4f7;border:1px solid var(--line);
+    border-radius:8px;padding:11px 13px;margin:9px 0 0;overflow-x:auto;color:var(--ink);
+  }
+  kbd{
+    font-family:var(--mono);font-size:12px;background:#fff;border:1px solid #ccd2da;
+    border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:var(--ink);
+  }
+  .warn{
+    background:#fff8e6;border:1px solid #f0dfb0;border-left:4px solid #d79a19;
+    border-radius:8px;padding:13px 16px;font-size:13.5px;color:#6b4d05;margin-top:16px;
+  }
+  .warn b{color:#8a6206;}
+
+  .locbar{
+    margin-top:26px;background:#eef4ff;border:1px solid #cddffb;border-left:4px solid var(--accent);
+    border-radius:8px;padding:14px 18px;
+  }
+  .locbar .lbl{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent);}
+  .locbar .p{
+    font-family:var(--mono);font-size:13px;color:var(--ink);margin-top:6px;
+    word-break:break-all;user-select:all;
+  }
+  .locbar .tip{font-size:12.5px;color:var(--ink-2);margin-top:7px;}
+
+  /* 速查表 */
+  table{width:100%;border-collapse:collapse;background:var(--card);
+        border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:13.8px;}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{background:#f0f2f5;font-weight:600;font-size:13px;color:var(--ink-2);white-space:nowrap;}
+  tr:last-child td{border-bottom:none;}
+  td:first-child{font-family:var(--mono);font-size:12.5px;color:#b4263c;white-space:nowrap;}
+  td{color:var(--ink-2);}
+  td b{color:var(--ink);}
+  footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
+         font-size:12.5px;color:var(--ink-3);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Python Basics · Runnable Notes</div>
+    <h1>Python 基础语法 · 可逐段运行的学习资料</h1>
+    <p class="sub">六个文件，覆盖变量、运算符、表达式、流程控制、函数五大核心语法，外加 26 题综合练习。
+       每个文件都能直接运行——零报错、零交互、跑完自动退出，适合在 VS Code 里对着注释一段一段跑。</p>
+    <div class="stats">
+      <div class="stat"><b>6</b><span>学习文件</span></div>
+      <div class="stat"><b>2820</b><span>行代码与注释</span></div>
+      <div class="stat"><b>74</b><span>知识小节</span></div>
+      <div class="stat"><b>75</b><span>练习题</span></div>
+      <div class="stat"><b>0</b><span>第三方依赖</span></div>
+    </div>
+    <div class="locbar">
+      <div class="lbl">文件就在这个位置</div>
+      <div class="p">C:\Users\30361\WorkBuddy\1\statistics-bigdata-learning\learning-materials\scripts\python-basics-learning\</div>
+      <div class="tip">在 VS Code 里用 <b>文件 → 打开文件夹</b> 选上面这个目录，左侧资源管理器里就会列出全部 8 个文件。
+        它位于 <code>learning-materials\scripts\</code> 之下，与 <code>01.py</code> / <code>02.py</code> 互为兄弟目录。</div>
+    </div>
+  </header>
+
+  <h2>建议学习路径</h2>
+  <div class="path">
+    <div class="step"><div class="n">STEP 1</div><div class="t">变量</div><div class="d">打地基：名字绑定对象</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">STEP 2</div><div class="t">运算符</div><div class="d">会算数：算术到逻辑</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">STEP 3</div><div class="t">表达式</div><div class="d">会表达：格式化与推导式</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">STEP 4</div><div class="t">流程控制</div><div class="d">会控制：分支与循环</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">STEP 5</div><div class="t">函数</div><div class="d">会抽象：参数与闭包</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">STEP 6</div><div class="t">综合练习</div><div class="d">检验：26 题实战</div></div>
+  </div>
+
+  <h2>六个文件</h2>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-top">
+        <div class="badge" style="background:var(--c1)">01</div>
+        <div><h3>变量</h3><div class="fn">01_variables.py</div></div>
+      </div>
+      <ul>
+        <li><b>名字绑定对象</b>：用 <code>id()</code> 亲手验证，不是「装值的盒子」</li>
+        <li>命名规则与风格、覆盖内置名的后果</li>
+        <li><b>动态类型</b>、多重赋值、链式赋值、星号解包</li>
+        <li><code>is</code> 与 <code>==</code>、小整数缓存、字符串驻留</li>
+        <li>可变 / 不可变对象、<b>别名陷阱</b>、深浅拷贝、<code>del</code></li>
+      </ul>
+      <div class="meta"><i>15 小节</i><i>10 题</i><i>420 行</i><a href="01_variables.py">打开文件 →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="badge" style="background:var(--c2)">02</div>
+        <div><h3>运算符</h3><div class="fn">02_operators.py</div></div>
+      </div>
+      <ul>
+        <li><code>/</code> 永远返回 float、<code>//</code> 向下取整、<code>%</code> 符号跟随除数</li>
+        <li><b>and / or 返回操作数本身</b>，配合短路求值写默认值</li>
+        <li>比较与<b>链式比较</b>、位运算、标志位实战</li>
+        <li><code>is</code> / <code>in</code> / 增强赋值 / <b>海象运算符</b> <code>:=</code></li>
+        <li>优先级速查表、<code>divmod</code> / <code>round</code> 银行家舍入的坑</li>
+      </ul>
+      <div class="meta"><i>13 小节</i><i>10 题</i><i>418 行</i><a href="02_operators.py">打开文件 →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="badge" style="background:var(--c3)">03</div>
+        <div><h3>表达式</h3><div class="fn">03_expressions.py</div></div>
+      </div>
+      <ul>
+        <li>表达式与语句的分界：<b>表达式一定有值</b></li>
+        <li>各类字面量：下划线分隔、进制、原始字符串</li>
+        <li><b>f-string 全套格式化</b>：精度、对齐、千分位、<code>{x=}</code></li>
+        <li>条件表达式、<b>切片三步长</b>、<code>s[::-1]</code> 反转</li>
+        <li>列表 / 字典 / 集合 / 生成器<b>推导式</b>、布尔上下文与真值测试</li>
+      </ul>
+      <div class="meta"><i>12 小节</i><i>11 题</i><i>419 行</i><a href="03_expressions.py">打开文件 →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="badge" style="background:var(--c4)">04</div>
+        <div><h3>流程控制</h3><div class="fn">04_flow_control.py</div></div>
+      </div>
+      <ul>
+        <li>缩进即语法、<code>if / elif / else</code> 与真值测试化简</li>
+        <li><code>while</code> 与 <b><code>while...else</code></b> 的真实语义</li>
+        <li><code>for</code> 遍历一切可迭代对象、<code>range</code> 三参数、<code>zip</code> / <code>enumerate</code></li>
+        <li><b><code>for...else</code></b> 省掉标志位、<code>break / continue / pass</code></li>
+        <li>嵌套循环实战：九九乘法表、猜数字、辗转相除；<b>match-case</b>（3.10+）</li>
+      </ul>
+      <div class="meta"><i>14 小节</i><i>10 题</i><i>450 行</i><a href="04_flow_control.py">打开文件 →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="badge" style="background:var(--c5)">05</div>
+        <div><h3>函数</h3><div class="fn">05_functions.py</div></div>
+      </div>
+      <ul>
+        <li>函数是<b>一等对象</b>：可传递、可返回、可放进列表</li>
+        <li>参数全形态：<code>*args</code> / <code>**kwargs</code> / 仅关键字 <code>*</code> / 仅位置 <code>/</code></li>
+        <li>返回值、<b>卫语句</b>压平嵌套、docstring 与类型注解</li>
+        <li>作用域 <b>LEGB</b>、<code>global</code> / <code>nonlocal</code>、<b>闭包</b></li>
+        <li><b>可变默认参数大坑</b>、递归与 <code>lru_cache</code>、<b>装饰器</b>入门</li>
+      </ul>
+      <div class="meta"><i>20 小节</i><i>8 题</i><i>618 行</i><a href="05_functions.py">打开文件 →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="badge" style="background:var(--c6)">06</div>
+        <div><h3>综合练习</h3><div class="fn">06_exercises.py</div></div>
+      </div>
+      <ul>
+        <li>四部分递进：变量与运算符 → 表达式与字符串 → 流程控制 → 函数</li>
+        <li>26 题全部带统一题干块与<b>难度星级</b>，含示例输入输出</li>
+        <li>每题都有可直接运行的参考实现 <code>ex01</code> … <code>ex26</code></li>
+        <li>末尾按题号给出<b>答案要点与另一种写法</b>，难题附完整思路拆解</li>
+        <li>经典题：闰年、九九乘法表、素数筛、斐波那契、菱形图案、闭包计数器、装饰器</li>
+      </ul>
+      <div class="meta"><i>26 题</i><i>4 部分</i><i>495 行</i><a href="06_exercises.py">打开文件 →</a></div>
+    </div>
+
+  </div>
+
+  <h2>在 VS Code 里怎么跑</h2>
+  <div class="cols">
+    <div class="box">
+      <h4>① 跑整个文件</h4>
+      <p>点右上角 <b>▶</b> 按钮，或按 <kbd>Ctrl</kbd>+<kbd>F5</kbd>。一次看完本章所有小节输出，适合第一遍通读。</p>
+    </div>
+    <div class="box">
+      <h4>② 逐段跑（推荐）</h4>
+      <p>选中若干行，按 <kbd>Shift</kbd>+<kbd>Enter</kbd>，或右键 → <b>Run Selection/Line in Python Terminal</b>。理解「这一行到底做了什么」最快的方式。</p>
+    </div>
+    <div class="box">
+      <h4>③ 命令行</h4>
+      <p>在 VS Code 终端里直接执行：</p>
+      <pre>python 01_variables.py</pre>
+    </div>
+  </div>
+
+  <div class="warn">
+    <b>前置条件：</b>VS Code 需安装 <b>Python 扩展</b>（ms-python.python），并用
+    <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> → <b>Python: Select Interpreter</b> 选好解释器。
+    本套资料只用标准库，<b>无需 pip 安装任何东西</b>；Python 3.10+ 即可（<code>match-case</code> 需 3.10+）。
+    文件不使用 <code>input()</code>，所以不会卡在等待输入。
+  </div>
+
+  <h2>每章要点速查</h2>
+  <table>
+    <thead><tr><th>章节</th><th>必须记住的几条</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>01 变量</td>
+        <td>变量是<b>贴在对象上的名字</b>；<code>=</code> 是先算右边再让名字指向它；
+            <code>is</code> 比对象身份、<code>==</code> 比值；判断 <code>None</code> 用 <code>is None</code>；
+            <code>copy.deepcopy()</code> 才能彻底断开嵌套引用。</td>
+      </tr>
+      <tr>
+        <td>02 运算符</td>
+        <td><code>/</code> 返回 float、<code>//</code> 向下取整、<code>%</code> 符号跟除数；
+            <code>and</code>/<code>or</code> 返回<b>操作数本身</b>且会短路；
+            <code>and</code>/<code>or</code> 优先级低于比较符；列表 <code>+=</code> 是原地改、<code>+</code> 是新建。</td>
+      </tr>
+      <tr>
+        <td>03 表达式</td>
+        <td>表达式一定有值；<code>{x:.2f}</code> / <code>{x:&gt;10}</code> / <code>{x:,}</code> / <code>{x=}</code> 四个最常用；
+            切片左闭右开且越界不报错、<code>[::-1]</code> 反转；
+            空列表空字典空串在条件里都是<b>假</b>。</td>
+      </tr>
+      <tr>
+        <td>04 流程控制</td>
+        <td>缩进就是语法；<code>elif</code> 顺序错了分支会变死代码；
+            <code>for/while</code> 的 <code>else</code> 只在<b>正常结束</b>时执行；
+            <code>break</code> 只跳一层；<code>range(a,b)</code> 左闭右开。</td>
+      </tr>
+      <tr>
+        <td>05 函数</td>
+        <td>函数是一等对象；参数顺序「位置 → *args → 默认值 → 仅关键字 → **kwargs」；
+            <b>别用可变对象当默认值</b>（改成 <code>None</code>）；作用域 LEGB；
+            装饰器 = 接收函数返回函数，记得 <code>functools.wraps</code>。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>常见报错对照表</h2>
+  <table>
+    <thead><tr><th>报错</th><th>典型原因</th><th>怎么修</th></tr></thead>
+    <tbody>
+      <tr><td>SyntaxError</td><td>少括号 / 少冒号 / 用了中文标点 / <code>if a = 1</code></td><td>看箭头指向行的<b>上一行</b>结尾</td></tr>
+      <tr><td>IndentationError</td><td>Tab 与空格混用、缩进层级不对</td><td>统一重排成 4 空格</td></tr>
+      <tr><td>NameError</td><td>名字打错、还没赋值就用、跨作用域访问</td><td>检查拼写与作用域</td></tr>
+      <tr><td>UnboundLocalError</td><td>函数内给同名变量赋值，又在赋值前读它</td><td>用 <code>global</code> / <code>nonlocal</code>，或换个名字</td></tr>
+      <tr><td>TypeError</td><td>类型不匹配（<code>"1" + 1</code>）、参数个数不对</td><td><code>type()</code> 确认后做转换</td></tr>
+      <tr><td>ValueError</td><td>类型对但值不对（<code>int("abc")</code>、解包个数不匹配）</td><td>检查数据本身</td></tr>
+      <tr><td>IndexError</td><td>下标越界，常见于 <code>range</code> 边界少一次</td><td>打印 <code>len()</code> 核对</td></tr>
+      <tr><td>KeyError</td><td>字典里没有这个键</td><td>用 <code>.get(k, 默认值)</code> 或先 <code>in</code> 判断</td></tr>
+      <tr><td>AttributeError</td><td>方法名拼错、对 <code>None</code> 调方法</td><td>确认对象类型与拼写</td></tr>
+      <tr><td>ZeroDivisionError</td><td>除数为 0（含 <code>//</code> <code>%</code>）</td><td>先判断再除</td></tr>
+      <tr><td>RecursionError</td><td>递归忘了终止条件</td><td>补 base case，或改写成循环</td></tr>
+    </tbody>
+  </table>
+
+  <footer>
+    六个脚本互不依赖，可任意顺序单独运行。文件里 <code>id()</code> 打印的内存地址每次运行可能不同，
+    只需比较两次是不是同一个数；小整数缓存与字符串驻留属于 CPython 实现细节，不要写进正式逻辑。
+    完整说明见 <code>README.md</code>。
+  </footer>
+
+</div>
+</body>
+</html>
